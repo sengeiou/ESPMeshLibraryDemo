@@ -25,9 +25,12 @@ typedef void(^BabyBLEFailureBlock)(NSError *error);
 
 @property (nonatomic,copy) BabyBLEFailureBlock babyFailureBlock;
 
+@property(nonatomic, strong) NSString *ssid;
+@property(nonatomic, strong) NSString *password;
 
-- (instancetype)init:(NSString*)identifier statusBlock:(BabyBLEStatusBlock)statusBlock sensorBlock:(BabyBLESensorBlock)sensorBlock;
-- (void)sendDataToDevice:(NSData *)data block:(void (^)(NSError *error))block;
+
+- (instancetype)init:(NSString*)uuid ssid:(NSString*)ssid password:(NSString*)password statusBlock:(BabyBLEStatusBlock)statusBlock sensorBlock:(BabyBLESensorBlock)sensorBlock;
+//- (void)sendDataToDevice:(NSData *)data block:(void (^)(NSError *error))block;
 - (void)destroySelf;
 
 

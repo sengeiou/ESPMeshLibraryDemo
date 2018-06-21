@@ -7,8 +7,11 @@
 //
 
 #import "MainTableViewController.h"
+#import "ESPMeshManager.h"
 
-@interface MainTableViewController ()
+@interface MainTableViewController (){
+    NSMutableDictionary* rootDic;
+}
 
 @end
 
@@ -18,14 +21,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.tableView.rowHeight = 40;
+    rootDic=[[NSMutableDictionary alloc] initWithCapacity:0];
+    [[ESPMeshManager share] starScanRootUDP:^(NSString *mac, NSString *host, NSString *port, NSString *type) {
+        self->rootDic[mac]=@{@"mac":mac,@"host":host,@"port":port,@"type":type};
+        id tmp=[[ESPMeshManager share] getMeshInfoFromHost:host protocol:type port:port Parameters:nil];
+        NSLog(@"%@", tmp);
+    } failblock:^(int code) {
+        
+    }];
+    [NSTimer scheduledTimerWithTimeInterval:3 repeats:true block:^(NSTimer * _Nonnull timer) {
+        [self.tableView reloadData];
+    }].fire;
 }
-
+-(void)dealloc{
+    [[ESPMeshManager share] cancelScanRootUDP];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -34,24 +45,32 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+
+    return rootDic.allKeys.count;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"cell"];
+    if (!cell) {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.numberOfLines=0;
+    }
+    NSDictionary* item=[rootDic objectForKey:rootDic.allKeys[indexPath.row]];
+    cell.textLabel.text = item[@"mac"];
+    //信号和服务
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"host:%@,port:%@,type:%@",item[@"host"],item[@"port"],item[@"type"]];
     
-    // Configure the cell...
     
     return cell;
 }
-*/
+
 
 /*
 // Override to support conditional editing of the table view.

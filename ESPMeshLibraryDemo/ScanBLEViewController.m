@@ -20,7 +20,7 @@
     [super viewDidLoad];
     self.tableView.delegate=self;
     self.tableView.dataSource=self;
-   
+    
     self.tableView.rowHeight = 80;
     deviceArr=[[NSMutableDictionary alloc] initWithCapacity:0];
     [[ESPMeshManager share] starScanBLE:^(NSString *uuid, NSString *name, NSData *mac, int RSSI, NSDictionary *data) {
@@ -30,12 +30,23 @@
     } failblock:^(int code) {
         
     }];
-    [NSTimer scheduledTimerWithTimeInterval:5 repeats:true block:^(NSTimer * _Nonnull timer) {
+    [NSTimer scheduledTimerWithTimeInterval:3 repeats:true block:^(NSTimer * _Nonnull timer) {
         [self.tableView reloadData];
     }].fire;
-    // Do any additional setup after loading the view.
+    // app从后台进入前台都会调用这个方法
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationBecomeActive) name:UIApplicationWillEnterForegroundNotification object:nil];
+    self.wifiName.text=ESPMeshManager.share.getCurrentWiFiSsid;
 }
-
+-(void)applicationBecomeActive{
+    self.wifiName.text=ESPMeshManager.share.getCurrentWiFiSsid;
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    
+}
+-(void)dealloc{
+    [[ESPMeshManager share] cancelScanBLE];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -43,12 +54,12 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-
+    
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
+    
     return deviceArr.count;
 }
 
@@ -68,7 +79,7 @@
     
     return cell;
 }
- 
+
 
 /*
  // Override to support conditional editing of the table view.
@@ -117,3 +128,4 @@
 
 
 @end
+
