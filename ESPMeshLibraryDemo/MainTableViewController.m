@@ -9,6 +9,8 @@
 #import "MainTableViewController.h"
 #import "ESPMeshManager.h"
 
+
+
 @interface MainTableViewController (){
     NSMutableDictionary* rootDic;
 }
@@ -21,18 +23,32 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView.rowHeight = 40;
+    self.tableView.rowHeight = 80;
     rootDic=[[NSMutableDictionary alloc] initWithCapacity:0];
-    [[ESPMeshManager share] starScanRootUDP:^(NSString *mac, NSString *host, NSString *port, NSString *type) {
-        self->rootDic[mac]=@{@"mac":mac,@"host":host,@"port":port,@"type":type};
-        id tmp=[[ESPMeshManager share] getMeshInfoFromHost:host protocol:type port:port Parameters:nil];
-        NSLog(@"%@", tmp);
+    
+}
+
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [[ESPMeshManager share] starScanRootUDP:^(EspDevice *device) {
+        
+        NSMutableArray* tmpDeviceArr = [[ESPMeshManager share] getMeshInfoFromHost:device];
+        
+        for (int i=0; i<tmpDeviceArr.count; i++) {
+            EspDevice* device=[tmpDeviceArr objectAtIndex:i];
+            self->rootDic[device.mac]=device;
+        }
     } failblock:^(int code) {
         
     }];
     [NSTimer scheduledTimerWithTimeInterval:3 repeats:true block:^(NSTimer * _Nonnull timer) {
         [self.tableView reloadData];
     }].fire;
+}
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [[ESPMeshManager share] cancelScanRootUDP];
 }
 -(void)dealloc{
     [[ESPMeshManager share] cancelScanRootUDP];
@@ -60,12 +76,12 @@
     if (!cell) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.textLabel.numberOfLines=0;
+        cell.detailTextLabel.numberOfLines=0;
     }
-    NSDictionary* item=[rootDic objectForKey:rootDic.allKeys[indexPath.row]];
-    cell.textLabel.text = item[@"mac"];
-    //信号和服务
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"host:%@,port:%@,type:%@",item[@"host"],item[@"port"],item[@"type"]];
+    EspDevice* device=[rootDic objectForKey:rootDic.allKeys[indexPath.row]];
+    cell.textLabel.text = device.mac;
+    
+    cell.detailTextLabel.text = device.descriptionStr;
     
     
     return cell;

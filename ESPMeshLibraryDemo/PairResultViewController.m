@@ -7,7 +7,8 @@
 //
 
 #import "PairResultViewController.h"
-
+#import "ESPMeshManager.h"
+#import "ESPBLEIO.h"
 @interface PairResultViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *logTF;
 
@@ -15,6 +16,12 @@
 
 @implementation PairResultViewController
 - (IBAction)okClick:(id)sender {
+    EspDevice* device=_deviceDic.allValues[0];
+    [[ESPBLEIO alloc] init:device.uuidBle ssid:_ssid password:_password statusBlock:^(int status) {
+        
+    } sensorBlock:^(NSData *data) {
+        
+    }];
 }
 
 - (void)viewDidLoad {

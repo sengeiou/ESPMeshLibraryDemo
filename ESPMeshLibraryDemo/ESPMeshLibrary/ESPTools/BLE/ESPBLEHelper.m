@@ -7,7 +7,6 @@
 //
 
 #import "ESPBLEHelper.h"
-//#import "ScanData.h"
 #define BleFilterName @"mesh"
 @implementation ESPBLEHelper
 {
@@ -79,9 +78,13 @@
         }else{
            macData=[ManufacturerData subdataWithRange:NSMakeRange(0, 6)];
         }
-        
         NSString *macStr=[[NSString alloc]initWithData:macData encoding:NSASCIIStringEncoding];
-        weakSelf.successBlock(peripheral.identifier.UUIDString,peripheral.name,macData,RSSI.intValue,advertisementData);
+        EspDevice* device=[[EspDevice alloc] init];
+        device.uuidBle=peripheral.identifier.UUIDString;
+        device.RSSI=RSSI.intValue;
+        device.name=peripheral.name;
+        device.mac=macStr;
+        weakSelf.successBlock(device);
         NSLog(@"发现设备uuid:%@,name:%@,距离:%d,mac:%@",peripheral.identifier.UUIDString,peripheral.name,RSSI.intValue,macStr);
     }];
     

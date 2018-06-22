@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "BabyBluetooth.h"
-
+#import "EspDevice.h"
 @interface ESPBLEHelper : NSObject
 
-typedef void (^BLEScanSccessBlock)(NSString* uuid,NSString* name,NSData* mac,int distance,NSDictionary* data);
+typedef void (^BLEScanSccessBlock)(EspDevice*device);
 typedef void (^BLEScanFailedBlock)(int code);
 @property (nonatomic, copy) BLEScanSccessBlock successBlock;
 @property (nonatomic, copy) BLEScanFailedBlock failBlock;//1:蓝牙未打开

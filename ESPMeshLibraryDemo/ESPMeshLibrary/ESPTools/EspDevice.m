@@ -19,5 +19,7 @@
 }
 
 
-
+-(NSString*)descriptionStr{
+    return [NSString stringWithFormat:@"mac:%@,name:%@,\n,host:%@,port%@\n,meshId:%@,RSSI:%d",self.mac,self.name,self.host,self.port,self.meshID,self.RSSI];
+}
 @end

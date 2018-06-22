@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "GCDAsyncUdpSocket.h"
-
+#import "EspDevice.h"
 @interface ESPRootScanUDP : NSObject
-typedef void (^UDPScanSccessBlock)(NSString* mac,NSString* host,NSString* port,NSString* type);//type:http  https
+typedef void (^UDPScanSccessBlock)(EspDevice* devixe);//type:http  https
 typedef void (^UDPScanFailedBlock)(int code);
 @property (nonatomic, copy) UDPScanSccessBlock successBlock;
 @property (nonatomic, copy) UDPScanFailedBlock failBlock;//1:蓝牙未打开

@@ -7,29 +7,27 @@
 //
 
 #import <Foundation/Foundation.h>
-//#import "EspDeviceCharacteristic.h"
 
-static const int EspMeshLayerRoot = 1;
-static const int EspMeshLayerUnknow = -1;
 
-@interface EspDevice : NSObject {
-    @private
-    int stateValue;
-}
+@interface EspDevice : NSObject
 
-@property(nonatomic, strong) NSString *key;
+@property(nonatomic, strong) NSString *uuidBle;
+@property(nonatomic, assign) int RSSI;
 @property(nonatomic, strong) NSString *mac;
-@property(nonatomic, strong) NSString *currentRomVersion;
 @property(nonatomic, strong) NSString *name;
-@property(nonatomic, assign) int typeId;
-@property(nonatomic, strong) NSString *typeName;
-@property(nonatomic, strong) NSString *hostAddress;
+
+@property(nonatomic, strong) NSString *httpType;
+@property(nonatomic, strong) NSString *host;
+@property(nonatomic, assign) NSString * port;
+
+@property(nonatomic, strong) NSString *meshID;
 @property(nonatomic, strong) NSString *parentDeviceMac;
 @property(nonatomic, strong) NSString *rootDeviceMac;
+
+@property(nonatomic, strong) NSString *key;
+@property(nonatomic, strong) NSString *currentRomVersion;
+@property(nonatomic, assign) int typeId;
+@property(nonatomic, strong) NSString *typeName;
 @property(nonatomic, assign) int meshLayerLevel;
-@property(nonatomic, strong) NSString *meshID;
-@property(nonatomic, strong) NSString *protocol;
-@property(nonatomic, assign) int protocolPort;
-
-
+-(NSString*)descriptionStr;
 @end

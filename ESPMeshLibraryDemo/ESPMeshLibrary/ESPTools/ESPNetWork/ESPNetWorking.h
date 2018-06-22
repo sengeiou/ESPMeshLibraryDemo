@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "EspDevice.h"
 @interface ESPNetWorking : NSObject
 
-+ (NSMutableURLRequest*)getMeshInfoFromHost:(NSString *)host protocol:(NSString *)protocol port:(NSString*)port Parameters:(NSDictionary*)parameters;
-
++ (NSMutableArray*)getMeshInfoFromHost:(EspDevice *)device;
++ (NSString *)getLocalUrlForProtocol:(NSString *)protocol host:(NSString *)host port:(NSString *)port file:(NSString *)file;
 @end

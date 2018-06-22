@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface PairResultViewController : UIViewController
+@property(nonatomic, assign) NSMutableDictionary *deviceDic;
+@property(nonatomic, assign) NSString* ssid;
+@property(nonatomic, assign) NSString* password;
 
 @end

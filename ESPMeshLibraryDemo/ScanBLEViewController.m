@@ -8,6 +8,7 @@
 
 #import "ScanBLEViewController.h"
 #import "ESPMeshManager.h"
+#import "PairResultViewController.h"
 @interface ScanBLEViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @end
@@ -23,16 +24,7 @@
     
     self.tableView.rowHeight = 80;
     deviceArr=[[NSMutableDictionary alloc] initWithCapacity:0];
-    [[ESPMeshManager share] starScanBLE:^(NSString *uuid, NSString *name, NSData *mac, int RSSI, NSDictionary *data) {
-        NSString* rssiStr=[NSString stringWithFormat:@"%d",RSSI];
-        self->deviceArr[uuid]=[[NSDictionary alloc] initWithObjectsAndKeys:uuid,@"uuid",name,@"name",rssiStr,@"RSSI", nil];
-        
-    } failblock:^(int code) {
-        
-    }];
-    [NSTimer scheduledTimerWithTimeInterval:3 repeats:true block:^(NSTimer * _Nonnull timer) {
-        [self.tableView reloadData];
-    }].fire;
+    
     // app从后台进入前台都会调用这个方法
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationBecomeActive) name:UIApplicationWillEnterForegroundNotification object:nil];
     self.wifiName.text=ESPMeshManager.share.getCurrentWiFiSsid;
@@ -40,13 +32,26 @@
 -(void)applicationBecomeActive{
     self.wifiName.text=ESPMeshManager.share.getCurrentWiFiSsid;
 }
--(void)viewWillDisappear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.wifiName.text=ESPMeshManager.share.getCurrentWiFiSsid;
+    [[ESPMeshManager share] starScanBLE:^(EspDevice *device) {
+        self->deviceArr[device.uuidBle]=device;
+    } failblock:^(int code) {
+        
+    }];
+    [NSTimer scheduledTimerWithTimeInterval:3 repeats:true block:^(NSTimer * _Nonnull timer) {
+        [self.tableView reloadData];
+    }].fire;
+}
+- (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    
+    [[ESPMeshManager share] cancelScanBLE];
 }
 -(void)dealloc{
     [[ESPMeshManager share] cancelScanBLE];
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -71,10 +76,10 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.numberOfLines=0;
     }
-    NSDictionary* item=[deviceArr objectForKey:deviceArr.allKeys[indexPath.row]];
-    cell.textLabel.text = item[@"uuid"];
+    EspDevice* device=[deviceArr objectForKey:deviceArr.allKeys[indexPath.row]];
+    cell.textLabel.text = device.uuidBle;
     //信号和服务
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"name:%@,mac:%@,RSSI:%@",item[@"name"],item[@"mac"],item[@"RSSI"]];
+    cell.detailTextLabel.text = device.descriptionStr;
     
     
     return cell;
@@ -120,6 +125,12 @@
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     //@"nextstep"
+    if ([segue.identifier isEqualToString:@"nextstep"]) {
+        PairResultViewController* vc=[segue destinationViewController];
+        vc.ssid=_wifiName.text;
+        vc.password=_password.text;
+        vc.deviceDic=deviceArr;
+    }
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     

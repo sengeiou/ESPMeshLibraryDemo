@@ -11,6 +11,12 @@
 		8D0AEDF420DBCACE00D3EB87 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 8D0AEDA520DBCACD00D3EB87 /* LICENSE */; };
 		8D0AEDF520DBCACE00D3EB87 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D0AEDF220DBCACD00D3EB87 /* libssl.a */; };
 		8D0AEDF820DBCF7A00D3EB87 /* DH_AES.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D0AEDF620DBCF7900D3EB87 /* DH_AES.m */; };
+		8D0AEDFB20DCA9F700D3EB87 /* EspHttpUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D0AEDF920DCA9F700D3EB87 /* EspHttpUtils.m */; };
+		8D0AEE0020DCAA0900D3EB87 /* EspHttpResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D0AEDFD20DCAA0900D3EB87 /* EspHttpResponse.m */; };
+		8D0AEE0120DCAA0900D3EB87 /* EspHttpParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D0AEDFE20DCAA0900D3EB87 /* EspHttpParams.m */; };
+		8D0AEE0420DCAA3300D3EB87 /* EspCommonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D0AEE0220DCAA3300D3EB87 /* EspCommonUtils.m */; };
+		8D0AEE0720DCAA5E00D3EB87 /* EspTextUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D0AEE0620DCAA5E00D3EB87 /* EspTextUtil.m */; };
+		8D0AEE0A20DCAA6B00D3EB87 /* EspBlockingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D0AEE0820DCAA6B00D3EB87 /* EspBlockingQueue.m */; };
 		8D37C5CE20DBAF2400C217AA /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D37C5C420DBAF2400C217AA /* AFURLResponseSerialization.m */; };
 		8D37C5CF20DBAF2400C217AA /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D37C5C520DBAF2400C217AA /* AFHTTPSessionManager.m */; };
 		8D37C5D020DBAF2400C217AA /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D37C5C720DBAF2400C217AA /* AFURLSessionManager.m */; };
@@ -142,6 +148,18 @@
 		8D0AEDF220DBCACD00D3EB87 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
 		8D0AEDF620DBCF7900D3EB87 /* DH_AES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DH_AES.m; sourceTree = "<group>"; };
 		8D0AEDF720DBCF7900D3EB87 /* DH_AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DH_AES.h; sourceTree = "<group>"; };
+		8D0AEDF920DCA9F700D3EB87 /* EspHttpUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EspHttpUtils.m; sourceTree = "<group>"; };
+		8D0AEDFA20DCA9F700D3EB87 /* EspHttpUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EspHttpUtils.h; sourceTree = "<group>"; };
+		8D0AEDFC20DCAA0900D3EB87 /* EspHttpParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EspHttpParams.h; sourceTree = "<group>"; };
+		8D0AEDFD20DCAA0900D3EB87 /* EspHttpResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EspHttpResponse.m; sourceTree = "<group>"; };
+		8D0AEDFE20DCAA0900D3EB87 /* EspHttpParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EspHttpParams.m; sourceTree = "<group>"; };
+		8D0AEDFF20DCAA0900D3EB87 /* EspHttpResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EspHttpResponse.h; sourceTree = "<group>"; };
+		8D0AEE0220DCAA3300D3EB87 /* EspCommonUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EspCommonUtils.m; sourceTree = "<group>"; };
+		8D0AEE0320DCAA3300D3EB87 /* EspCommonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EspCommonUtils.h; sourceTree = "<group>"; };
+		8D0AEE0520DCAA5E00D3EB87 /* EspTextUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EspTextUtil.h; sourceTree = "<group>"; };
+		8D0AEE0620DCAA5E00D3EB87 /* EspTextUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EspTextUtil.m; sourceTree = "<group>"; };
+		8D0AEE0820DCAA6B00D3EB87 /* EspBlockingQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EspBlockingQueue.m; sourceTree = "<group>"; };
+		8D0AEE0920DCAA6B00D3EB87 /* EspBlockingQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EspBlockingQueue.h; sourceTree = "<group>"; };
 		8D37C5C020DBAF2400C217AA /* AFSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFSecurityPolicy.h; sourceTree = "<group>"; };
 		8D37C5C120DBAF2400C217AA /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
 		8D37C5C220DBAF2400C217AA /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
@@ -401,6 +419,18 @@
 				8D83CD7A20DB8A0300DD632E /* ESPRootScanUDP.m */,
 				8D37C5D420DBAF5C00C217AA /* ESPNetWorking.h */,
 				8D37C5D520DBAF5C00C217AA /* ESPNetWorking.m */,
+				8D0AEDFA20DCA9F700D3EB87 /* EspHttpUtils.h */,
+				8D0AEDF920DCA9F700D3EB87 /* EspHttpUtils.m */,
+				8D0AEDFC20DCAA0900D3EB87 /* EspHttpParams.h */,
+				8D0AEDFE20DCAA0900D3EB87 /* EspHttpParams.m */,
+				8D0AEDFF20DCAA0900D3EB87 /* EspHttpResponse.h */,
+				8D0AEDFD20DCAA0900D3EB87 /* EspHttpResponse.m */,
+				8D0AEE0320DCAA3300D3EB87 /* EspCommonUtils.h */,
+				8D0AEE0220DCAA3300D3EB87 /* EspCommonUtils.m */,
+				8D0AEE0520DCAA5E00D3EB87 /* EspTextUtil.h */,
+				8D0AEE0620DCAA5E00D3EB87 /* EspTextUtil.m */,
+				8D0AEE0920DCAA6B00D3EB87 /* EspBlockingQueue.h */,
+				8D0AEE0820DCAA6B00D3EB87 /* EspBlockingQueue.m */,
 				8D37C5BF20DBAF2400C217AA /* AFNetworking */,
 				8D83CC7F20DA514C00DD632E /* CocoaAsyncSocket */,
 			);
@@ -430,8 +460,8 @@
 				8D83CC2420DA4C8A00DD632E /* ESPMeshLibrary */,
 				8D83CC0B20DA48F700DD632E /* AppDelegate.h */,
 				8D83CC0C20DA48F700DD632E /* AppDelegate.m */,
-				8D83CCD320DA74D600DD632E /* MainTableViewController.m */,
 				8D83CCD220DA74D600DD632E /* MainTableViewController.h */,
+				8D83CCD320DA74D600DD632E /* MainTableViewController.m */,
 				8D83CC1420DA48F700DD632E /* Main.storyboard */,
 				8D83CC1720DA48F800DD632E /* Assets.xcassets */,
 				8D83CC1920DA48F800DD632E /* LaunchScreen.storyboard */,
@@ -448,10 +478,10 @@
 		8D83CC2420DA4C8A00DD632E /* ESPMeshLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				8D83CC2C20DA4EC400DD632E /* ESPTools */,
-				8D83CC2B20DA4EA700DD632E /* ESPDataBase */,
 				8D83CC2820DA4E9200DD632E /* ESPMeshManager.h */,
 				8D83CC2920DA4E9200DD632E /* ESPMeshManager.m */,
+				8D83CC2C20DA4EC400DD632E /* ESPTools */,
+				8D83CC2B20DA4EA700DD632E /* ESPDataBase */,
 			);
 			path = ESPMeshLibrary;
 			sourceTree = "<group>";
@@ -667,7 +697,9 @@
 				8D83CCC820DA53EC00DD632E /* BabyDefine.m in Sources */,
 				8D83CCC120DA53EC00DD632E /* BabyOptions.m in Sources */,
 				8D83CCC720DA53EC00DD632E /* BabyBluetooth.m in Sources */,
+				8D0AEE0020DCAA0900D3EB87 /* EspHttpResponse.m in Sources */,
 				8D83CCA620DA514C00DD632E /* DDMultiFormatter.m in Sources */,
+				8D0AEE0A20DCAA6B00D3EB87 /* EspBlockingQueue.m in Sources */,
 				8D83CCD120DA567100DD632E /* ESPBLEHelper.m in Sources */,
 				8D83CCD720DA78A300DD632E /* ScanBLEViewController.m in Sources */,
 				8D83CD7F20DB8B2B00DD632E /* EspDevice.m in Sources */,
@@ -678,8 +710,10 @@
 				8D83CCA920DA514C00DD632E /* DDAbstractDatabaseLogger.m in Sources */,
 				8D83CC0D20DA48F700DD632E /* AppDelegate.m in Sources */,
 				8D37C5DB20DBC29300C217AA /* PacketCommand.m in Sources */,
+				8D0AEE0720DCAA5E00D3EB87 /* EspTextUtil.m in Sources */,
 				8D83CCC620DA53EC00DD632E /* BabyRhythm.m in Sources */,
 				8D37C5CE20DBAF2400C217AA /* AFURLResponseSerialization.m in Sources */,
+				8D0AEE0120DCAA0900D3EB87 /* EspHttpParams.m in Sources */,
 				8D37C5D020DBAF2400C217AA /* AFURLSessionManager.m in Sources */,
 				8D83CCD020DA567100DD632E /* ESPBLEIO.m in Sources */,
 				8D37C5D220DBAF2400C217AA /* AFNetworkReachabilityManager.m in Sources */,
@@ -687,6 +721,7 @@
 				8D83CCC420DA53EC00DD632E /* BabyCentralManager.m in Sources */,
 				8D83CCDA20DA790600DD632E /* PairResultViewController.m in Sources */,
 				8D83CC1E20DA48F800DD632E /* main.m in Sources */,
+				8D0AEE0420DCAA3300D3EB87 /* EspCommonUtils.m in Sources */,
 				8D83CCC220DA53EC00DD632E /* BabyCallback.m in Sources */,
 				8D83CD7C20DB8A0300DD632E /* ESPRootScanUDP.m in Sources */,
 				8D83CCC320DA53EC00DD632E /* BabyPeripheralManager.m in Sources */,
@@ -697,6 +732,7 @@
 				8D83CCA320DA514C00DD632E /* DDASLLogger.m in Sources */,
 				8D37C5D620DBAF5C00C217AA /* ESPNetWorking.m in Sources */,
 				8D83CCA020DA514C00DD632E /* GCDAsyncUdpSocket.m in Sources */,
+				8D0AEDFB20DCA9F700D3EB87 /* EspHttpUtils.m in Sources */,
 				8D37C5D120DBAF2400C217AA /* AFURLRequestSerialization.m in Sources */,
 				8D83CCA120DA514C00DD632E /* GCDAsyncSocket.m in Sources */,
 				8D37C5DE20DBC2A700C217AA /* RSAObject.m in Sources */,

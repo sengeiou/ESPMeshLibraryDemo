@@ -51,8 +51,8 @@
     [[ESPRootScanUDP share] cancelScan];
 }
 
-//
--(NSMutableURLRequest*)getMeshInfoFromHost:(NSString *)host protocol:(NSString *)protocol  port:(NSString*)port Parameters:(NSDictionary*)parameters{
-    return [ESPNetWorking getMeshInfoFromHost:host protocol:protocol port:port Parameters:parameters];
+//获取host下的所有设备的mac
+- (NSMutableArray*)getMeshInfoFromHost:(EspDevice *)device{
+    return [ESPNetWorking getMeshInfoFromHost:device];
 }
 @end

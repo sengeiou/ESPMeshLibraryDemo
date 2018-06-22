@@ -91,10 +91,14 @@
     //data就是接收的数据
     if ([deviceAddress isEqualToString:curDevice]==false) {//不是当前设备发的消息
         NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        NSLog(@"%@",dataStr);
         if ([dataStr.lowercaseString containsString:@"esp32 mesh"]) {
             NSArray* dataArr=[dataStr componentsSeparatedByString:@" "];
-            _successBlock(dataArr[2],deviceAddress,dataArr[4],dataArr[3]);
+            EspDevice* device=[[EspDevice alloc] init];
+            device.mac=dataArr[2];
+            device.host=deviceAddress;
+            device.httpType=dataArr[3];
+            device.port=dataArr[4];
+            _successBlock(device);
         }
         
     }

@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "ESPBLEHelper.h"
 #import "ESPRootScanUDP.h"
+#import "ESPBLEIO.h"
+#import "EspDevice.h"
+
 
 @interface ESPMeshManager : NSObject
 
@@ -20,9 +23,13 @@
  */
 + (instancetype)share;
 
-//蓝牙设备扫描
+//扫描蓝牙附近所有蓝牙Mesh设备
 -(void)starScanBLE:(BLEScanSccessBlock)successBlock failblock:(BLEScanFailedBlock)failBlock;
+//结束扫描
 -(void)cancelScanBLE;
+//连接设备并配网
+-(void)starBLEPair:(EspDevice*)device successBlock:(BLEScanSccessBlock)successBlock failblock:(BLEScanFailedBlock)failBlock;
+
 
 //获取当前Wi-Fi名
 - (nullable NSString *)getCurrentWiFiSsid;
@@ -32,7 +39,6 @@
 -(void)cancelScanRootUDP;
 
 //获取所有子节点信息
--(NSMutableURLRequest*)getMeshInfoFromHost:(NSString *)host protocol:(NSString *)protocol  port:(NSString*)port Parameters:(NSDictionary*)parameters;
-//
+- (NSMutableArray*)getMeshInfoFromHost:(EspDevice *)device;
 //
 @end
