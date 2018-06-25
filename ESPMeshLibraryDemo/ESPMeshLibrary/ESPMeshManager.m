@@ -51,7 +51,7 @@
     [[ESPRootScanUDP share] cancelScan];
 }
 
-//获取host下的所有设备的mac
+//获取root host下的所有设备的mac
 - (NSMutableArray*)getMeshInfoFromHost:(EspDevice *)device{
     return [ESPNetWorking getMeshInfoFromHost:device];
 }

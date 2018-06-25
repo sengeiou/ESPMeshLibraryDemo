@@ -8,30 +8,26 @@
 
 #import <Foundation/Foundation.h>
 #import "BabyBluetooth.h"
-typedef void (^BabyBLEStatusBlock)(int status);
+#import "EspDevice.h"
 
-typedef void (^BabyBLESensorBlock)(NSData* data);
-
-typedef void(^BabyBLEFailureBlock)(NSError *error);
 
 @interface ESPBLEIO : NSObject
 {
 @public
     BabyBluetooth *baby;
 }
+typedef void(^BLEIOCallBackBlock)(NSString *msg);
 @property(strong,nonatomic)CBPeripheral *currPeripheral;
-@property (nonatomic, copy) BabyBLEStatusBlock babyBLEStatusBlock;//-2 手机蓝牙未断开,-1 设备连接失败,1 设备连接成功,2 手机蓝牙连接
-@property (nonatomic, copy) BabyBLESensorBlock babyBLESensorBlock;//传感器数据变化回掉block
+@property (nonatomic, copy) BLEIOCallBackBlock CallBackBlock;//code 0代表成功
 
-@property (nonatomic,copy) BabyBLEFailureBlock babyFailureBlock;
 
 @property(nonatomic, strong) NSString *ssid;
 @property(nonatomic, strong) NSString *password;
+@property(strong,nonatomic)  EspDevice *device;
 
+- (instancetype)init:(EspDevice*)device ssid:(NSString*)ssid password:(NSString*)password callBackBlock:(BLEIOCallBackBlock)callBackBlock;
 
-- (instancetype)init:(NSString*)uuid ssid:(NSString*)ssid password:(NSString*)password statusBlock:(BabyBLEStatusBlock)statusBlock sensorBlock:(BabyBLESensorBlock)sensorBlock;
-//- (void)sendDataToDevice:(NSData *)data block:(void (^)(NSError *error))block;
-- (void)destroySelf;
+- (void)disconnectBLE;
 
 
 @end

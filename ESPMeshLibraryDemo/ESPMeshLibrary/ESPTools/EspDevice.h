@@ -29,5 +29,13 @@
 @property(nonatomic, assign) int typeId;
 @property(nonatomic, strong) NSString *typeName;
 @property(nonatomic, assign) int meshLayerLevel;
+
+@property(nonatomic,assign)NSInteger index;
+@property(nonatomic,assign)NSInteger sequence;
+@property(nonatomic,strong)NSData *Securtkey;
+@property(nonatomic,strong)NSData *senddata;
+@property(nonatomic,assign)BOOL blufisuccess;
+@property(nonatomic,strong)NSTimer *connecttimer;
+@property(nonatomic,strong)NSTimer *blufitimer;
 -(NSString*)descriptionStr;
 @end

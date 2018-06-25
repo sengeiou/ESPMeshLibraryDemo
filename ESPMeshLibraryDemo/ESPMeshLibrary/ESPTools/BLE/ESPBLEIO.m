@@ -15,9 +15,9 @@
 @private
     BOOL requireWifiState;
 }
-@property(nonatomic,assign)NSInteger sequence;
+
+
 @property(nonatomic,strong) RSAObject *rsaobject;
-@property(nonatomic,strong)NSData *Securtkey;
 @property(nonatomic,assign) uint8_t channel;
 
 @end
@@ -28,27 +28,26 @@
     CBCharacteristic* readCharacteristic;
 }
 NSString* idString;
-- (instancetype)init:(NSString*)uuid ssid:(NSString*)ssid password:(NSString*)password statusBlock:(BabyBLEStatusBlock)statusBlock sensorBlock:(BabyBLESensorBlock)sensorBlock {
+- (instancetype)init:(EspDevice*)device ssid:(NSString*)ssid password:(NSString*)password callBackBlock:(BLEIOCallBackBlock)callBackBlock {
     self = [super init];
     if (self) {
         requireWifiState=YES;
-        idString=uuid;
+        _device=device;
+        idString=device.uuidBle;
         self.ssid=ssid;
         self.password=password;
-        _babyBLEStatusBlock=statusBlock;//状态变化回掉block
-        _babyBLESensorBlock=sensorBlock;//传感器数据变化回掉block
+        _CallBackBlock=callBackBlock;
+        
         //初始化BabyBluetooth 蓝牙库
         baby = [BabyBluetooth shareBabyBluetooth];
         [baby cancelAllPeripheralsConnection];
-        _sequence=0;
         [self babyDelegate];//设置蓝牙委托
-        //开始扫描设备
         [self performSelector:@selector(loadData) withObject:nil afterDelay:0.5];
     }
     return self;
     
 }
-- (void)destroySelf{
+- (void)disconnectBLE{
     [baby AutoReconnectCancel:self.currPeripheral];
     [baby cancelAllPeripheralsConnection];
 }
@@ -56,27 +55,28 @@ NSString* idString;
 -(void)loadData{
     
     if (baby.centralManager.state==CBCentralManagerStatePoweredOn) {
+        _CallBackBlock(@"CBCentralManagerStatePoweredOn");
         self.currPeripheral=[baby retrievePeripheralWithUUIDString:idString];//获取外设
         if (self.currPeripheral==nil) {
-            _babyBLEStatusBlock(-1);
+            _CallBackBlock(@"retrievePeripheralWithUUIDString failed");
             return;
         }
-        _babyBLEStatusBlock(2);
+        _CallBackBlock(@"retrievePeripheralWithUUIDString success");
         switch (self.currPeripheral.state) {//初始化设备状态
             case CBPeripheralStateConnected:
-                _babyBLEStatusBlock(1);
+                _CallBackBlock(@"CBPeripheralStateConnected");
                 break;
             case CBPeripheralStateDisconnected:
-                _babyBLEStatusBlock(-1);
+                _CallBackBlock(@"CBPeripheralStateDisconnected");
                 break;
             default:
-                _babyBLEStatusBlock(0);
+                //_babyBLEStatusBlock(0);
                 break;
         }
         [baby AutoReconnect:self.currPeripheral];
         baby.having(self.currPeripheral).and.channel(idString).then.connectToPeripherals().discoverServices().discoverCharacteristics().readValueForCharacteristic().discoverDescriptorsForCharacteristic().readValueForDescriptors().begin();
     } else {
-        _babyBLEStatusBlock(-2);
+        _CallBackBlock(@"CBCentralManagerStatePoweredOff");
     }
     
 }
@@ -106,7 +106,7 @@ NSString* idString;
             return ;
         }
         NSLog(@"设备：%@--连接成功",peripheral.name);
-        weakSelf.babyBLEStatusBlock(1);
+        weakSelf.CallBackBlock(@"设备：--连接成功");
         
     }];
     
@@ -116,7 +116,7 @@ NSString* idString;
             return ;
         }
         NSLog(@"设备：%@--连接失败",peripheral.name);
-        weakSelf.babyBLEStatusBlock(-1);
+        weakSelf.CallBackBlock(@"设备：--连接失败");
     }];
     
     //设置设备断开连接的委托
@@ -125,7 +125,7 @@ NSString* idString;
             return ;
         }
         NSLog(@"设备：%@--断开连接",peripheral.name);
-        weakSelf.babyBLEStatusBlock(-1);
+         weakSelf.CallBackBlock(@"设备：--断开连接");
     }];
     
     //设置发现设service的Characteristics的委托
@@ -139,19 +139,19 @@ NSString* idString;
         for (CBCharacteristic* characteristic in service.characteristics)
         {
             
-            if ([[[characteristic UUID] UUIDString] isEqualToString:@"FFF2"])
+            if ([[[characteristic UUID] UUIDString] isEqualToString:@"FF01"])
             {
                 self->writeCharacteristic=characteristic;
                 
             }
-            if ([[[characteristic UUID] UUIDString] isEqualToString:@"FFF1"])
+            if ([[[characteristic UUID] UUIDString] isEqualToString:@"FF02"])
             {
                 self->readCharacteristic=characteristic;
                 [weakSelf setNotifiy];
                 
             }
             if (self->writeCharacteristic != nil && self->readCharacteristic != nil) {
-                weakSelf.babyBLEStatusBlock(3);
+                weakSelf.CallBackBlock(@"已发现writeCharacteristic，readCharacteristic");
                 continue;
             }
         }
@@ -159,26 +159,44 @@ NSString* idString;
         
     }];
     
-    //设置读取characteristics的委托
-    [baby setBlockOnReadValueForCharacteristicAtChannel:idString block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-        if (![idString isEqualToString:peripheral.identifier.UUIDString]) {
-            return ;
-        }
-        weakSelf.babyBLESensorBlock(characteristics.value);
-    }];
+//    //设置读取characteristics的委托
+//    [baby setBlockOnReadValueForCharacteristicAtChannel:idString block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
+//        if (![idString isEqualToString:peripheral.identifier.UUIDString]||Notified==false) {
+//            return ;
+//        }
+//        NSLog(@"%@",[[NSString alloc] initWithData:characteristics.value encoding:NSASCIIStringEncoding]);
+//        //weakSelf.babyBLESensorBlock(characteristics.value);
+//
+//    }];
     
     //设置写数据成功的block
     [baby setBlockOnDidWriteValueForCharacteristicAtChannel:idString block:^(CBCharacteristic *characteristic, NSError *error) {
-        if (weakSelf.babyFailureBlock) {
-            weakSelf.babyFailureBlock(error);
-        }
+        //weakSelf.CallBackBlock([NSError errorWithDomain:@"写数据成功" code:1 userInfo:nil]);
         
     }];
-    //读取rssi的委托
-    [baby setBlockOnDidReadRSSI:^(NSNumber *RSSI, NSError *error) {
-        NSLog(@"setBlockOnDidReadRSSI:RSSI:%@",RSSI);
+//    //读取rssi的委托
+//    [baby setBlockOnDidReadRSSI:^(NSNumber *RSSI, NSError *error) {
+//        weakSelf.CallBackBlock([NSError errorWithDomain:@"已发现writeCharacteristic，readCharacteristic" code:1 userInfo:nil]);
+//        NSLog(@"setBlockOnDidReadRSSI:RSSI:%@",RSSI);
+//    }];
+    [baby setBlockOnDidUpdateNotificationStateForCharacteristicAtChannel:idString block:^(CBCharacteristic *characteristic, NSError *error) {
+        if (!error) {
+            if (characteristic.isNotifying) {
+                NSLog(@"BLE set notify success");
+                [weakSelf updateMessage:@"Set notification success"];
+                
+                [weakSelf SendNegotiateDataWithDevice];
+            } else {
+                NSLog(@"BLE set notify failed");
+                [weakSelf updateMessage:@"Set notification failed"];
+                [weakSelf disconnectBLE];
+            }
+        } else {
+            NSLog(@"BLE update notification error %@", error);
+            [weakSelf updateMessage:@"Notification state error"];
+            [weakSelf disconnectBLE];
+        }
     }];
-    
     //扫描选项->CBCentralManagerScanOptionAllowDuplicatesKey:忽略同一个Peripheral端的多个发现事件被聚合成一个发现事件
     NSDictionary *scanForPeripheralsWithOptions = @{CBCentralManagerScanOptionAllowDuplicatesKey:@YES};
     /*连接选项->
@@ -194,44 +212,51 @@ NSString* idString;
     [baby setBabyOptionsAtChannel:idString scanForPeripheralsWithOptions:scanForPeripheralsWithOptions connectPeripheralWithOptions:connectOptions scanForPeripheralsWithServices:nil discoverWithServices:nil discoverWithCharacteristics:nil];
 }
 //订阅一个值
+//int Notified=0;
 -(void)setNotifiy{
-    
     __weak typeof(self)weakSelf = self;
     if (self->readCharacteristic.properties & CBCharacteristicPropertyNotify ||  self->readCharacteristic.properties & CBCharacteristicPropertyIndicate) {
         
         if(!readCharacteristic.isNotifying) {
             
             [weakSelf.currPeripheral setNotifyValue:YES forCharacteristic:self->readCharacteristic];
-            
+        
             [baby notify:self.currPeripheral
           characteristic:self->readCharacteristic
                    block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-                       if (weakSelf != nil) {
-                           weakSelf.babyBLESensorBlock(characteristics.value);
-                           
+                      
+                       //订阅蓝牙数据返回
+                       if (!error) {
+                           [weakSelf analyseData:[NSMutableData dataWithData:characteristics.value]];
+                       } else {
+                           NSLog(@"BLE notification error %@", error);
+                           [weakSelf updateMessage:@"Notification error"];
+                           [weakSelf disconnectBLE];
                        }
+                           
+                       
                        
                    }];
         }
     }
     else{
-        NSLog(@"这个characteristic没有nofity的权限");
+        self.CallBackBlock(@"这个characteristic没有nofity的权限");
         return;
     }
     
 }
 
-
-
-
-//
+- (void)updateMessage:(NSString *)message {
+    self.CallBackBlock(message);
+}
 
 - (void)writeStructDataWithDevice:(NSData *)data {
-    if (self.currPeripheral != nil && writeCharacteristic != nil) {
-        [self.currPeripheral writeValue:data forCharacteristic:writeCharacteristic type:CBCharacteristicWriteWithResponse];
-        _sequence = _sequence + 1;
-    }else{
-        NSLog(@"peripheral write characteristic nil");
+    if (_currPeripheral!=nil && writeCharacteristic!=nil) {
+        [_currPeripheral writeValue:data forCharacteristic:writeCharacteristic type:CBCharacteristicWriteWithResponse];
+        _device.sequence = _device.sequence + 1;
+    } else {
+        [self updateMessage:@"peripheral write characteristic nil"];
+        [self disconnectBLE];
     }
 }
 
@@ -252,7 +277,7 @@ NSString* idString;
         NSRange range = NSMakeRange(4, length);
         NSData *Decryptdata = [data subdataWithRange:range];
         Byte *byte = (Byte *)[Decryptdata bytes];
-        Decryptdata = [DH_AES blufi_aes_DecryptWithSequence:sequence data:byte len:length KeyData:_Securtkey];
+        Decryptdata = [DH_AES blufi_aes_DecryptWithSequence:sequence data:byte len:length KeyData:_device.Securtkey];
         [data replaceBytesInRange:range withBytes:[Decryptdata bytes]];
     } else {
         //zwjLog(@"无加密");
@@ -264,8 +289,8 @@ NSString* idString;
             //zwjLog(@"校验成功");
         } else {
             NSLog(@"校验失败,返回");
-            //[self updateMessage:@"CRC error"];
-            //[self disconnectBLE];
+            [self updateMessage:@"CRC error"];
+            [self disconnectBLE];
             return;
         }
     } else {
@@ -273,7 +298,7 @@ NSString* idString;
     }
     if (Ack) {
         //zwjLog(@"回复ACK");
-        [self writeStructDataWithDevice:[PacketCommand ReturnAckWithSequence:_sequence BackSequence:sequence] ];
+        [self writeStructDataWithDevice:[PacketCommand ReturnAckWithSequence:_device.sequence BackSequence:sequence] ];
     } else {
         //zwjLog(@"不回复ACK");
     }
@@ -294,8 +319,8 @@ NSString* idString;
         [self GetUserPacketWithData:data];
     } else {
         NSLog(@"异常数据包");
-        //[self updateMessage:@"Data error"];
-        //[self disconnectBLE];
+        [self updateMessage:@"Data error"];
+        [self disconnectBLE];
     }
 }
 
@@ -306,10 +331,10 @@ NSString* idString;
     switch (SubType) {
         case 0x00:
             self.channel=dataByte[4];
-//            if (device.index == 1) {
-//                //连接wifi
-//                [self writeStructDataWithDevice:[PacketCommand ConnectToAPWithSequence:_sequence]];
-//            }
+            if (_device.index == 1) {
+                //连接wifi
+                [self writeStructDataWithDevice:[PacketCommand ConnectToAPWithSequence:_device.sequence]];
+            }
         default:
             break;
     }
@@ -321,15 +346,13 @@ NSString* idString;
     Byte SubType=dataByte[0]>>2;
     switch (SubType) {
         case ACK_Esp32_Phone_ControlSubType:
-            //NSLog(@"Receive ACK ,%@", device.name);
-            //device.blufisuccess = YES;
-            //连接成功Wi-Fi
-            //[self updateMessage:@"Post configure data complete"];
+            NSLog(@"Receive ACK ,%@", _device.name);
+            _device.blufisuccess = YES;
+            [self updateMessage:@"Post configure data complete"];
             if (!requireWifiState) {
-            //成功
+                [self disconnectBLE];
+                self.CallBackBlock(@"success pair");
                 
-                //[self ];
-                //[self.navigationController popToRootViewControllerAnimated:YES];
             }
             break;
         case ESP32_Phone_Security_ControlSubType:
@@ -358,13 +381,13 @@ NSString* idString;
             NSLog(@"Receive negoriate data");
             if (data.length < length + 4) {
                 NSLog(@"Negotiate data error");
-                NSLog(@"Negotiate data error");
-                //[self disconnectBLE];
+                [self updateMessage:@"Negotiate data error"];
+                [self disconnectBLE];
                 return;
             }
             NSData *NegotiateData = [data subdataWithRange:NSMakeRange(4, length)];
-            _Securtkey = [DH_AES GetSecurtKey:NegotiateData RsaObject:self.rsaobject];
-            //[self updateMessage:@"Negotiate security complete"];
+            _device.Securtkey = [DH_AES GetSecurtKey:NegotiateData RsaObject:self.rsaobject];
+            [self updateMessage:@"Negotiate security complete"];
             
             NSMutableData *data = [[NSMutableData alloc]init];
             uint8_t type[1] = {0x01};
@@ -389,17 +412,17 @@ NSString* idString;
             [data appendData:[[NSData alloc]initWithBytes:length length:sizeof(length)]];
             [data appendData:meshID];
             
-            if (_Securtkey) {
+            if (_device.Securtkey) {
                 if (meshID) {
                     NSLog(@"%@",data);
                     //设置meshID
-                    [self writeStructDataWithDevice:[PacketCommand SetMeshID:data Sequence:_sequence Encrypt:YES WithKeyData:_Securtkey]];
+                    [self writeStructDataWithDevice:[PacketCommand SetMeshID:data Sequence:_device.sequence Encrypt:YES WithKeyData:_device.Securtkey]];
                 }
             } else {
                 if (meshID) {
                     //设置meshID
                     NSLog(@"%@",data);
-                    [self writeStructDataWithDevice:[PacketCommand SetMeshID:data Sequence:_sequence Encrypt:NO WithKeyData:_Securtkey]];
+                    [self writeStructDataWithDevice:[PacketCommand SetMeshID:data Sequence:_device.sequence Encrypt:NO WithKeyData:_device.Securtkey]];
                 }
             }
         }
@@ -407,38 +430,39 @@ NSString* idString;
         case Wifi_Connection_state_Report_DataSubType: //连接状态报告
             NSLog(@"Notify wifi state");
             if (length < 3) {
-                NSLog(@"Wifi state data error");
-                //[self disconnectBLE];
+                [self updateMessage:@"Wifi state data error"];
+                [self disconnectBLE];
                 return;
             }
             Byte opMode = dataByte[4];
             NSLog(@"OP Mode %d", opMode);
             if (opMode != STAOpmode) {
-                NSLog(@"Wifi opmode %d", opMode);
-                //[self disconnectBLE];
+                [self updateMessage:[NSString stringWithFormat:@"Wifi opmode %d", opMode]];
+                [self disconnectBLE];
                 return;
             }
             Byte stationConn = dataByte[5];
             NSLog(@"Wifi state %d", stationConn);
             BOOL connectWifi = stationConn == 0;
             if (!connectWifi) {
-                NSLog(@"Device connect wifi failed");
-                //[self disconnectBLE];
+                [self updateMessage:@"Device connect wifi failed"];
+                [self disconnectBLE];
                 return;
             }
-            //[self updateMessage:@"Device connected wifi"];
-            //[self disconnectBLE];
+            [self updateMessage:@"Device connected wifi"];
+            [self disconnectBLE];
+            [self updateMessage:@"success pair"];
             //[self.navigationController popToRootViewControllerAnimated:YES];
             break;
         case Error_DataSubType:
             NSLog(@"Notify error code");
             if (data.length < 5) {
                 NSLog(@"Error notify data error");
-                //[self updateMessage:@"Error notify data error"];
+                [self updateMessage:@"Error notify data error"];
             } else  {
-                //[self updateMessage:[NSString stringWithFormat:@"Error notify code = %d", dataByte[4]]];
+                [self updateMessage:[NSString stringWithFormat:@"Error notify code = %d", dataByte[4]]];
             }
-            //[self disconnectBLE];
+            [self disconnectBLE];
             break;
         case BSSID_STA_DataSubType:
         case SSID_STA_DataSubType:
@@ -460,33 +484,35 @@ NSString* idString;
             break;
     }
 }
--(void)SendNegotiateDataWithDevice {
+
+-(void)SendNegotiateDataWithDevice{
     if (!self.rsaobject) {
         self.rsaobject = [DH_AES DHGenerateKey];
     }
     NSInteger datacount = 139;
     //发送数据长度
     uint16_t length = self.rsaobject.P.length + self.rsaobject.g.length + self.rsaobject.PublickKey.length+6;
-    [self writeStructDataWithDevice:[PacketCommand SetNegotiatelength:length Sequence:_sequence]];
+    [self writeStructDataWithDevice:[PacketCommand SetNegotiatelength:length Sequence:_device.sequence]];
     
     //发送数据,需要分包
-    NSData* senddata = [PacketCommand GenerateNegotiateData:self.rsaobject];
-    NSInteger number = senddata.length / datacount;
+    _device.senddata = [PacketCommand GenerateNegotiateData:self.rsaobject];
+    NSInteger number = _device.senddata.length / datacount;
     if (number > 0) {
         for(NSInteger i = 0; i < number + 1; i++){
             if (i == number){
-                NSData *data=[PacketCommand SendNegotiateData:senddata Sequence:_sequence Frag:NO TotalLength:senddata.length];
+                NSData *data=[PacketCommand SendNegotiateData:_device.senddata Sequence:_device.sequence Frag:NO TotalLength:_device.senddata.length];
                 [self writeStructDataWithDevice:data];
             } else {
-                NSData *data = [PacketCommand SendNegotiateData:[senddata subdataWithRange:NSMakeRange(0, datacount)] Sequence:_sequence Frag:YES TotalLength:senddata.length];
+                NSData *data = [PacketCommand SendNegotiateData:[_device.senddata subdataWithRange:NSMakeRange(0, datacount)] Sequence:_device.sequence Frag:YES TotalLength:_device.senddata.length];
                 [self writeStructDataWithDevice:data];
-                senddata = [senddata subdataWithRange:NSMakeRange(datacount, senddata.length-datacount)];
+                _device.senddata = [_device.senddata subdataWithRange:NSMakeRange(datacount, _device.senddata.length-datacount)];
             }
         }
     } else {
-        NSData *data=[PacketCommand SendNegotiateData:senddata Sequence:_sequence Frag:NO TotalLength:senddata.length];
+        NSData *data=[PacketCommand SendNegotiateData:_device.senddata Sequence:_device.sequence Frag:NO TotalLength:_device.senddata.length];
         [self writeStructDataWithDevice:data];
     }
 }
+
 @end
 

@@ -27,7 +27,7 @@
 -(void)starScanBLE:(BLEScanSccessBlock)successBlock failblock:(BLEScanFailedBlock)failBlock;
 //结束扫描
 -(void)cancelScanBLE;
-//连接设备并配网
+//连接设备并配网//(待完成)
 -(void)starBLEPair:(EspDevice*)device successBlock:(BLEScanSccessBlock)successBlock failblock:(BLEScanFailedBlock)failBlock;
 
 
@@ -38,7 +38,7 @@
 -(void)starScanRootUDP:(UDPScanSccessBlock)successBlock failblock:(UDPScanFailedBlock)failBlock;
 -(void)cancelScanRootUDP;
 
-//获取所有子节点信息
+//获取root host下的所有设备的mac
 - (NSMutableArray*)getMeshInfoFromHost:(EspDevice *)device;
 //
 @end

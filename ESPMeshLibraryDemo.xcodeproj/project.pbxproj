@@ -396,14 +396,14 @@
 		8D37C5D720DBC21000C217AA /* BLE */ = {
 			isa = PBXGroup;
 			children = (
+				8D0AEDA220DBCACD00D3EB87 /* openssl */,
+				8D83CCAB20DA53EB00DD632E /* BabyBluetooth */,
 				8D0AEDF720DBCF7900D3EB87 /* DH_AES.h */,
 				8D0AEDF620DBCF7900D3EB87 /* DH_AES.m */,
 				8D37C5DC20DBC2A700C217AA /* RSAObject.h */,
 				8D37C5DD20DBC2A700C217AA /* RSAObject.m */,
 				8D37C5D920DBC29200C217AA /* PacketCommand.h */,
 				8D37C5DA20DBC29300C217AA /* PacketCommand.m */,
-				8D0AEDA220DBCACD00D3EB87 /* openssl */,
-				8D83CCAB20DA53EB00DD632E /* BabyBluetooth */,
 				8D83CCCD20DA567100DD632E /* ESPBLEHelper.h */,
 				8D83CCCF20DA567100DD632E /* ESPBLEHelper.m */,
 				8D83CCCC20DA567100DD632E /* ESPBLEIO.h */,
@@ -462,15 +462,15 @@
 				8D83CC0C20DA48F700DD632E /* AppDelegate.m */,
 				8D83CCD220DA74D600DD632E /* MainTableViewController.h */,
 				8D83CCD320DA74D600DD632E /* MainTableViewController.m */,
+				8D83CCD520DA78A300DD632E /* ScanBLEViewController.h */,
+				8D83CCD620DA78A300DD632E /* ScanBLEViewController.m */,
+				8D83CCD820DA790600DD632E /* PairResultViewController.h */,
+				8D83CCD920DA790600DD632E /* PairResultViewController.m */,
 				8D83CC1420DA48F700DD632E /* Main.storyboard */,
 				8D83CC1720DA48F800DD632E /* Assets.xcassets */,
 				8D83CC1920DA48F800DD632E /* LaunchScreen.storyboard */,
 				8D83CC1C20DA48F800DD632E /* Info.plist */,
 				8D83CC1D20DA48F800DD632E /* main.m */,
-				8D83CCD520DA78A300DD632E /* ScanBLEViewController.h */,
-				8D83CCD620DA78A300DD632E /* ScanBLEViewController.m */,
-				8D83CCD820DA790600DD632E /* PairResultViewController.h */,
-				8D83CCD920DA790600DD632E /* PairResultViewController.m */,
 			);
 			path = ESPMeshLibraryDemo;
 			sourceTree = "<group>";
