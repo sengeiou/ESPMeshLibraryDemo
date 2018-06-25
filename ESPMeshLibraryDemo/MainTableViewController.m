@@ -8,7 +8,7 @@
 
 #import "MainTableViewController.h"
 #import "ESPMeshManager.h"
-
+#import "EspDeviceCommonViewController.h"
 
 
 @interface MainTableViewController (){
@@ -87,7 +87,9 @@
     return cell;
 }
 
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self performSegueWithIdentifier:@"ShowSelectedDevice" sender:indexPath];
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -122,14 +124,21 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString:@"ShowSelectedDevice"]) {
+        EspDeviceCommonViewController *deviceVC = segue.destinationViewController;
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        NSInteger selectedIndex = indexPath.row;
+        
+        EspDevice *device = [rootDic.allValues objectAtIndex:selectedIndex];
+        deviceVC.device = device;
+        deviceVC.title = device.name;
+    }
 }
-*/
+
 
 @end

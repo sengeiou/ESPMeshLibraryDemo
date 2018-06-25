@@ -74,6 +74,7 @@
 
 - (void) sendMsg {
     NSString *s = @"Are You Espressif IOT Smart Device?";
+    NSLog(@"%@", s);
     NSData *data = [s dataUsingEncoding:NSUTF8StringEncoding];
     [_udpCLientSoket sendData:data toHost:udpHost port:udpPort withTimeout:-1 tag:0];
 }

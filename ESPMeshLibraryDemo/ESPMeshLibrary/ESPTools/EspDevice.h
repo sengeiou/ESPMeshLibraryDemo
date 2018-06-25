@@ -7,9 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-
-
-@interface EspDevice : NSObject
+#import "EspDeviceCharacteristic.h"
+static const int EspMeshLayerRoot = 1;
+static const int EspMeshLayerUnknow = -1;
+@interface EspDevice : NSObject{
+@private
+    NSMutableDictionary<NSNumber*, EspDeviceCharacteristic*> const *characters;
+@private
+    int stateValue;
+}
 
 @property(nonatomic, strong) NSString *uuidBle;
 @property(nonatomic, assign) int RSSI;
@@ -38,4 +44,27 @@
 @property(nonatomic,strong)NSTimer *connecttimer;
 @property(nonatomic,strong)NSTimer *blufitimer;
 -(NSString*)descriptionStr;
+
+
+typedef enum {
+    EspDeviceStateIDLE,
+    EspDeviceStateOfflice,
+    EspDeviceStateLocal,
+    EspDeviceStateCloud,
+    EspDeviceStateUpgradeLocal,
+    EspDeviceStateUpgradeCloud,
+    EspDeviceStateDeleted,
+}EspDeviceState;
+
+- (void)addState:(EspDeviceState)state;
+- (void)removeState:(EspDeviceState)state;
+- (void)clearState;
+- (BOOL)isState:(EspDeviceState)state;
+- (EspDeviceCharacteristic *)getCharacteristicForCid:(int)cid;
+- (NSArray<EspDeviceCharacteristic *> *)getCharacteristics;
+- (void)addOrReplaceCharacteristic:(EspDeviceCharacteristic *)characteristic;
+- (void)addOrReplaceCharacteristics:(NSArray<EspDeviceCharacteristic *> *)characteristics;
+- (void)removeCharacteristicForCid:(int)cid;
+- (void)clearCharacteristics;
+- (void)notifyStatusChanged;
 @end

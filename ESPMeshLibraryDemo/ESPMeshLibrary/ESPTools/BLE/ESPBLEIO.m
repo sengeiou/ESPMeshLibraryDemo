@@ -16,7 +16,7 @@
     BOOL requireWifiState;
 }
 
-
+@property(nonatomic,assign) BOOL HasSendNegotiateDataWithDevice;
 @property(nonatomic,strong) RSAObject *rsaobject;
 @property(nonatomic,assign) uint8_t channel;
 
@@ -32,6 +32,7 @@ NSString* idString;
     self = [super init];
     if (self) {
         requireWifiState=YES;
+        _HasSendNegotiateDataWithDevice=false;
         _device=device;
         idString=device.uuidBle;
         self.ssid=ssid;
@@ -80,16 +81,7 @@ NSString* idString;
     }
     
 }
-////发送数据
-//- (void)sendDataToDevice:(NSData *)data block:(void (^)(NSError *error))block{
-//    if (self.currPeripheral != nil) {
-//        if (writeCharacteristic != nil) {
-//            [self.currPeripheral writeValue:data forCharacteristic:writeCharacteristic type:CBCharacteristicWriteWithResponse];
-//
-//            _babyFailureBlock = block;
-//        }
-//    }
-//}
+
 -(void)babyDelegate{
     __weak typeof(self)weakSelf = self;
     
@@ -159,32 +151,24 @@ NSString* idString;
         
     }];
     
-//    //设置读取characteristics的委托
-//    [baby setBlockOnReadValueForCharacteristicAtChannel:idString block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-//        if (![idString isEqualToString:peripheral.identifier.UUIDString]||Notified==false) {
-//            return ;
-//        }
-//        NSLog(@"%@",[[NSString alloc] initWithData:characteristics.value encoding:NSASCIIStringEncoding]);
-//        //weakSelf.babyBLESensorBlock(characteristics.value);
-//
-//    }];
+
     
     //设置写数据成功的block
     [baby setBlockOnDidWriteValueForCharacteristicAtChannel:idString block:^(CBCharacteristic *characteristic, NSError *error) {
         //weakSelf.CallBackBlock([NSError errorWithDomain:@"写数据成功" code:1 userInfo:nil]);
         
     }];
-//    //读取rssi的委托
-//    [baby setBlockOnDidReadRSSI:^(NSNumber *RSSI, NSError *error) {
-//        weakSelf.CallBackBlock([NSError errorWithDomain:@"已发现writeCharacteristic，readCharacteristic" code:1 userInfo:nil]);
-//        NSLog(@"setBlockOnDidReadRSSI:RSSI:%@",RSSI);
-//    }];
+
+   
     [baby setBlockOnDidUpdateNotificationStateForCharacteristicAtChannel:idString block:^(CBCharacteristic *characteristic, NSError *error) {
+        if (weakSelf.HasSendNegotiateDataWithDevice) {
+            return ;
+        }
         if (!error) {
             if (characteristic.isNotifying) {
                 NSLog(@"BLE set notify success");
                 [weakSelf updateMessage:@"Set notification success"];
-                
+                weakSelf.HasSendNegotiateDataWithDevice = true;
                 [weakSelf SendNegotiateDataWithDevice];
             } else {
                 NSLog(@"BLE set notify failed");
@@ -272,7 +256,7 @@ NSString* idString;
     BOOL Ack=frameControl & ACK_FrameCtrlType;
     BOOL AppendPacket=frameControl & Append_Data_FrameCtrlType;
     if (hash) {
-        //zwjLog(@"加密");
+        NSLog(@"加密");
         //解密
         NSRange range = NSMakeRange(4, length);
         NSData *Decryptdata = [data subdataWithRange:range];
@@ -280,13 +264,13 @@ NSString* idString;
         Decryptdata = [DH_AES blufi_aes_DecryptWithSequence:sequence data:byte len:length KeyData:_device.Securtkey];
         [data replaceBytesInRange:range withBytes:[Decryptdata bytes]];
     } else {
-        //zwjLog(@"无加密");
+        NSLog(@"无加密");
     }
     if (checksum) {
-        //zwjLog(@"有校验");
+        NSLog(@"有校验");
         //计算校验
         if ([PacketCommand VerifyCRCWithData:data]) {
-            //zwjLog(@"校验成功");
+            NSLog(@"校验成功");
         } else {
             NSLog(@"校验失败,返回");
             [self updateMessage:@"CRC error"];
@@ -294,25 +278,25 @@ NSString* idString;
             return;
         }
     } else {
-        //zwjLog(@"无校验");
+        NSLog(@"无校验");
     }
     if (Ack) {
-        //zwjLog(@"回复ACK");
+        NSLog(@"回复ACK");
         [self writeStructDataWithDevice:[PacketCommand ReturnAckWithSequence:_device.sequence BackSequence:sequence] ];
     } else {
-        //zwjLog(@"不回复ACK");
+        NSLog(@"不回复ACK");
     }
     if (AppendPacket) {
-        //zwjLog(@"有后续包");
+        NSLog(@"有后续包");
     } else {
-        //zwjLog(@"没有后续包");
+        NSLog(@"没有后续包");
     }
     
     if (Type == ContolType) {
-        //zwjLog(@"接收到控制包===========");
+        NSLog(@"接收到控制包===========");
         [self GetControlPacketWithData:data];
     } else if (Type==DataType) {
-        //zwjLog(@"接收到数据包===========");
+        NSLog(@"接收到数据包===========");
         [self GetDataPackectWithData:data];
     } else if (Type == UserType){
         //自定义用户包
