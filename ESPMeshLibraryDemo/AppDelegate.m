@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "IQKeyboardManager.h"
+#import "ExampleWKWebViewController.h"
 @interface AppDelegate ()
 
 @end
@@ -18,6 +19,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [IQKeyboardManager sharedManager].enable = true;
+    self.window.rootViewController = [[ExampleWKWebViewController alloc] init];
+    [self.window makeKeyAndVisible];
+    
     return YES;
 }
 

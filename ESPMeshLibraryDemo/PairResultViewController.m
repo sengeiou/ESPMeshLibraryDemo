@@ -16,11 +16,10 @@
 
 @implementation PairResultViewController
 - (IBAction)okClick:(id)sender {
-    //for (int i=0; i<_deviceDic.count; i++) {
     self.logTF.text=@"";
     if (_deviceDic.count>0) {
         EspDevice* device=_deviceDic.allValues[0];
-        [[ESPBLEIO alloc] init:device ssid:_ssid password:_password callBackBlock:^(NSString *msg) {
+        [[ESPMeshManager share] starBLEPair:device ssid:_ssid password:_password callBackBlock:^(NSString *msg) {
             dispatch_async(dispatch_get_main_queue(), ^(){
                 self.logTF.text=[NSString stringWithFormat:@"%@\n%@",msg,self.logTF.text];
                 if ([msg isEqualToString:@"success pair"]) {
@@ -30,14 +29,12 @@
         }];
     }
     
-   // }
-    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     if (_deviceDic.count>0) {
         EspDevice* device=_deviceDic.allValues[0];
-        [[ESPBLEIO alloc] init:device ssid:_ssid password:_password callBackBlock:^(NSString *msg) {
+        [[ESPMeshManager share] starBLEPair:device ssid:_ssid password:_password callBackBlock:^(NSString *msg) {
             dispatch_async(dispatch_get_main_queue(), ^(){
                 self.logTF.text=[NSString stringWithFormat:@"%@\n%@",msg,self.logTF.text];
                 if ([msg isEqualToString:@"success pair"]) {

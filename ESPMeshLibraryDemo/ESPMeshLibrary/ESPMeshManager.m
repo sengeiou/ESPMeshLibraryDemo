@@ -30,6 +30,11 @@
     return self;
     
 }
+//获取当前Wi-Fi名
+-(nullable NSString *)getCurrentWiFiSsid{
+    return ESPTools.getCurrentWiFiSsid;
+}
+
 //开始蓝牙扫描
 -(void)starScanBLE:(BLEScanSccessBlock)successBlock failblock:(BLEScanFailedBlock)failBlock
 {
@@ -38,10 +43,12 @@
 -(void)cancelScanBLE{
     [[ESPBLEHelper share] cancelScan];
 }
-//获取当前Wi-Fi名
-- (nullable NSString *)getCurrentWiFiSsid{
-    return ESPTools.getCurrentWiFiSsid;
+//开始蓝牙Wi-Fi配网
+-(void)starBLEPair:(EspDevice*)device ssid:(NSString*)ssid password:(NSString*)password callBackBlock:(BLEIOCallBackBlock)callBackBlock{
+    [[ESPBLEIO alloc] init:device ssid:ssid password:password callBackBlock:callBackBlock];
 }
+
+
 //UDP扫描已联网设备根节点
 -(void)starScanRootUDP:(UDPScanSccessBlock)successBlock failblock:(UDPScanFailedBlock)failBlock
 {
@@ -55,4 +62,7 @@
 - (NSMutableArray*)getMeshInfoFromHost:(EspDevice *)device{
     return [ESPNetWorking getMeshInfoFromHost:device];
 }
+
+
+
 @end

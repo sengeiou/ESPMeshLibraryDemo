@@ -67,4 +67,11 @@ typedef enum {
 - (void)removeCharacteristicForCid:(int)cid;
 - (void)clearCharacteristics;
 - (void)notifyStatusChanged;
+
+//获取设备详细信息
+- (NSMutableArray*)getDetailInfo:(EspDevice *)device;
+//获取指定数据信息
+- (NSMutableArray*)getStatusInfo:(EspDevice *)device statusIDs:(NSArray*)statusIDs;
+//设置指定数据信息
+- (BOOL*)setStatusInfo:(EspDevice *)device statusIDs:(NSDictionary*)statusIDAndValues;
 @end
