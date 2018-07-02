@@ -43,11 +43,11 @@ static const NSTimeInterval TIMEOUT = 5;
     if (![EspCommonUtils isNull:headers]) {
         [request setAllHTTPHeaderFields:headers];
     }
-    NSDictionary *dict = [request allHTTPHeaderFields];
-    for (NSString *k in dict) {
-        NSString *v = dict[k];
-        NSLog(@"%@: %@", k, v);
-    }
+//    NSDictionary *dict = [request allHTTPHeaderFields];
+//    for (NSString *k in dict) {
+//        NSString *v = dict[k];
+//        NSLog(@"%@: %@", k, v);
+//    }
     if (![EspCommonUtils isNull:content]) {
         [request setHTTPBody:content];
         

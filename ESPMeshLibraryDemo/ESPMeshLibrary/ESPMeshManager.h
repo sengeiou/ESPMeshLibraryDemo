@@ -47,5 +47,7 @@
 - (NSMutableArray*)getMeshInfoFromHost:(EspDevice *)device;
 
 
+//JS发送方法
+//JS返回方法
 
 @end

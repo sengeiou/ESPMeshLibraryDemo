@@ -18,8 +18,7 @@
 @end
 
 @implementation MainTableViewController
-- (IBAction)OTAClick:(id)sender {
-}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -31,20 +30,33 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [[ESPMeshManager share] starScanRootUDP:^(EspDevice *device) {
+    [[ESPMeshManager share] starScanRootUDP:^(EspDevice *dev) {
         
-        NSMutableArray* tmpDeviceArr = [[ESPMeshManager share] getMeshInfoFromHost:device];
+        NSMutableArray* tmpDeviceArr = [[ESPMeshManager share] getMeshInfoFromHost:dev];
         
         for (int i=0; i<tmpDeviceArr.count; i++) {
-            EspDevice* device=[tmpDeviceArr objectAtIndex:i];
-            self->rootDic[device.mac]=device;
+            EspDevice* newDevice=[tmpDeviceArr objectAtIndex:i];
+            EspDevice* oldDevice=self->rootDic[newDevice.mac];
+            if (oldDevice != nil){
+                oldDevice.httpType=newDevice.httpType;
+                oldDevice.host=newDevice.host;
+                oldDevice.port=newDevice.port;
+                oldDevice.meshID=newDevice.meshID;
+            }else{
+                oldDevice=newDevice;
+            }
+            self->rootDic[oldDevice.mac]=oldDevice;
         }
     } failblock:^(int code) {
         
     }];
-    [NSTimer scheduledTimerWithTimeInterval:3 repeats:true block:^(NSTimer * _Nonnull timer) {
-        [self.tableView reloadData];
-    }].fire;
+    if (@available(iOS 10.0, *)) {
+        [NSTimer scheduledTimerWithTimeInterval:3 repeats:true block:^(NSTimer * _Nonnull timer) {
+            [self.tableView reloadData];
+        }].fire;
+    } else {
+        // Fallback on earlier versions
+    }
 }
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
@@ -138,6 +150,7 @@
         deviceVC.device = device;
         deviceVC.title = device.name;
     }
+    
 }
 
 

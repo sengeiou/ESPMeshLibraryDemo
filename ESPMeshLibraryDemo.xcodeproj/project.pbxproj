@@ -198,6 +198,7 @@
 		8D222CF220E233D000B62939 /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D222CEA20E233D000B62939 /* WebViewJavascriptBridge.m */; };
 		8D222CF320E233D000B62939 /* WebViewJavascriptBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D222CED20E233D000B62939 /* WebViewJavascriptBridge_JS.m */; };
 		8D222CF620E2340100B62939 /* ExampleWKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D222CF520E2340100B62939 /* ExampleWKWebViewController.m */; };
+		8D36CB5120E36BCB0041EB72 /* ExampleApp.html in Resources */ = {isa = PBXBuildFile; fileRef = 8D36CB5020E36BCB0041EB72 /* ExampleApp.html */; };
 		8D37C5CE20DBAF2400C217AA /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D37C5C420DBAF2400C217AA /* AFURLResponseSerialization.m */; };
 		8D37C5CF20DBAF2400C217AA /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D37C5C520DBAF2400C217AA /* AFHTTPSessionManager.m */; };
 		8D37C5D020DBAF2400C217AA /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D37C5C720DBAF2400C217AA /* AFURLSessionManager.m */; };
@@ -217,6 +218,7 @@
 		8D5F307520E0E04500B9BCCD /* EspConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5F307420E0E04500B9BCCD /* EspConstants.m */; };
 		8D5F307820E0E0B700B9BCCD /* EspDeviceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5F307720E0E0B700B9BCCD /* EspDeviceUtil.m */; };
 		8D5F307C20E0E12100B9BCCD /* EspJsonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5F307B20E0E12100B9BCCD /* EspJsonUtils.m */; };
+		8D81B9F820E653FF0073D333 /* ESPOTAHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D81B9F720E653FF0073D333 /* ESPOTAHelper.m */; };
 		8D83CC0D20DA48F700DD632E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D83CC0C20DA48F700DD632E /* AppDelegate.m */; };
 		8D83CC1620DA48F700DD632E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8D83CC1420DA48F700DD632E /* Main.storyboard */; };
 		8D83CC1820DA48F800DD632E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D83CC1720DA48F800DD632E /* Assets.xcassets */; };
@@ -558,6 +560,7 @@
 		8D222CEF20E233D000B62939 /* WKWebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKWebViewJavascriptBridge.h; sourceTree = "<group>"; };
 		8D222CF420E2340100B62939 /* ExampleWKWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleWKWebViewController.h; sourceTree = "<group>"; };
 		8D222CF520E2340100B62939 /* ExampleWKWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleWKWebViewController.m; sourceTree = "<group>"; };
+		8D36CB5020E36BCB0041EB72 /* ExampleApp.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ExampleApp.html; sourceTree = "<group>"; };
 		8D37C5C020DBAF2400C217AA /* AFSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFSecurityPolicy.h; sourceTree = "<group>"; };
 		8D37C5C120DBAF2400C217AA /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
 		8D37C5C220DBAF2400C217AA /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
@@ -598,6 +601,8 @@
 		8D5F307720E0E0B700B9BCCD /* EspDeviceUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EspDeviceUtil.m; sourceTree = "<group>"; };
 		8D5F307A20E0E12100B9BCCD /* EspJsonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EspJsonUtils.h; sourceTree = "<group>"; };
 		8D5F307B20E0E12100B9BCCD /* EspJsonUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EspJsonUtils.m; sourceTree = "<group>"; };
+		8D81B9F620E653FF0073D333 /* ESPOTAHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESPOTAHelper.h; sourceTree = "<group>"; };
+		8D81B9F720E653FF0073D333 /* ESPOTAHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ESPOTAHelper.m; sourceTree = "<group>"; };
 		8D83CC0820DA48F700DD632E /* ESPMeshLibraryDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ESPMeshLibraryDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D83CC0B20DA48F700DD632E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8D83CC0C20DA48F700DD632E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -1299,6 +1304,7 @@
 				8D83CC2420DA4C8A00DD632E /* ESPMeshLibrary */,
 				8D83CC0B20DA48F700DD632E /* AppDelegate.h */,
 				8D83CC0C20DA48F700DD632E /* AppDelegate.m */,
+				8D36CB5020E36BCB0041EB72 /* ExampleApp.html */,
 				8D222CF420E2340100B62939 /* ExampleWKWebViewController.h */,
 				8D222CF520E2340100B62939 /* ExampleWKWebViewController.m */,
 				8D83CCD220DA74D600DD632E /* MainTableViewController.h */,
@@ -1352,6 +1358,8 @@
 				8D83CD7E20DB8B2B00DD632E /* EspDevice.m */,
 				8D83CCDE20DB7A7B00DD632E /* ESPTools.h */,
 				8D83CCDF20DB7A7B00DD632E /* ESPTools.m */,
+				8D81B9F620E653FF0073D333 /* ESPOTAHelper.h */,
+				8D81B9F720E653FF0073D333 /* ESPOTAHelper.m */,
 			);
 			path = ESPTools;
 			sourceTree = "<group>";
@@ -1777,6 +1785,7 @@
 				8D222C6F20E2339F00B62939 /* colorPicker.html in Resources */,
 				8D222C7320E2339F00B62939 /* conDevice.html in Resources */,
 				8D222CE120E2339F00B62939 /* setTable.html in Resources */,
+				8D36CB5120E36BCB0041EB72 /* ExampleApp.html in Resources */,
 				8D222C8820E2339F00B62939 /* scanDevice.html in Resources */,
 				8D222C9020E2339F00B62939 /* footer.html in Resources */,
 				8D222CC820E2339F00B62939 /* eventInfo.js in Resources */,
@@ -1864,6 +1873,7 @@
 				8D5F307820E0E0B700B9BCCD /* EspDeviceUtil.m in Sources */,
 				8D37C5CF20DBAF2400C217AA /* AFHTTPSessionManager.m in Sources */,
 				8D83CCA820DA514C00DD632E /* DDLog.m in Sources */,
+				8D81B9F820E653FF0073D333 /* ESPOTAHelper.m in Sources */,
 				8D83CCA420DA514C00DD632E /* DDContextFilterLogFormatter.m in Sources */,
 				8D37C5D320DBAF2400C217AA /* AFSecurityPolicy.m in Sources */,
 				8D83CCA320DA514C00DD632E /* DDASLLogger.m in Sources */,

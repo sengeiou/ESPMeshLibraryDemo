@@ -38,23 +38,8 @@ require(["IScroll", "jQuery", "bootstrapSlider", "vue", "vueRouter", "MINT", "ba
     });
 
     router.beforeEach(function(to, from, next) {
-        var userInfo = window.espmesh.userLoadLastLogged();
-        userInfo = JSON.parse(userInfo);
-        if(userInfo != null && userInfo != "" && userInfo.status == 0){//如果有就直接到首页咯
-            next();
-        } else {
-            if(to.path == "/login"){//如果是登录页面路径，就直接next()
-                next();
-            } else if (to.path == "/register") {
-                next();
-            } else{//不然就跳转到登录；
-                next({
-                    path: "/login",
-                    query: { redirect: to.fullPath }//把要跳转的地址作为参数传到下一步
-                });
-            }
-
-        }
+          var res = window.espmesh.userLogin("qqq", "aaaa");
+          console.log(res)
     });
     var store = new Vuex.Store({
         state: {

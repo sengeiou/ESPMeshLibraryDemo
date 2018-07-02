@@ -19,8 +19,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [IQKeyboardManager sharedManager].enable = true;
-    self.window.rootViewController = [[ExampleWKWebViewController alloc] init];
-    [self.window makeKeyAndVisible];
+//    self.window.rootViewController = [[ExampleWKWebViewController alloc] init];
+//    [self.window makeKeyAndVisible];
     
     return YES;
 }

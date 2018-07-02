@@ -34,11 +34,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Mesh List" id="Su0-TR-wdb">
-                        <barButtonItem key="leftBarButtonItem" title="OTA" id="GXS-dn-xHt">
-                            <connections>
-                                <action selector="OTAClick:" destination="zFE-4C-pB1" id="r7e-tD-q0i"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Fst-Lf-HKv">
                             <connections>
                                 <segue destination="50Z-PP-dRH" kind="show" id="OL2-Fl-fsh"/>
@@ -87,7 +82,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ca8-Tm-Fcd">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="12345678" borderStyle="roundedRect" placeholder="密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ca8-Tm-Fcd">
                                 <rect key="frame" x="20" y="547" width="335" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="5J9-SV-dew"/>
@@ -215,10 +210,15 @@
                                             <action selector="onRefreshItemClick:" destination="1Yh-yM-Sil" id="ecD-by-Rlt"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="qjg-nF-sYG"/>
                                     <barButtonItem title="Post" id="4qy-cZ-Voe">
                                         <connections>
                                             <action selector="onPostAllItemClick:" destination="1Yh-yM-Sil" id="7mw-i3-gpD"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="qjg-nF-sYG"/>
+                                    <barButtonItem title="OTA" id="HX7-1n-87L">
+                                        <connections>
+                                            <segue destination="Wj8-53-dFk" kind="show" identifier="showOTA" id="jU1-SA-Xdm"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -236,6 +236,76 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RVQ-IX-SMx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1940" y="593"/>
+        </scene>
+        <!--EspOTA View Controller-->
+        <scene sceneID="eLf-Ce-KB8">
+            <objects>
+                <viewController storyboardIdentifier="EspOTAViewController" id="Wj8-53-dFk" customClass="EspOTAViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VFj-2z-qI4">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fq4-0D-AQd">
+                                <rect key="frame" x="117" y="80" width="141" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Download latest rom"/>
+                                <connections>
+                                    <action selector="onDownloadClick:" destination="Wj8-53-dFk" eventType="touchUpInside" id="Akz-VC-VOz"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jYU-7r-bWS">
+                                <rect key="frame" x="16" y="131" width="343" height="516"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BinIdentifier" id="Mk5-Qw-Ug3">
+                                        <rect key="frame" x="0.0" y="28" width="343" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Mk5-Qw-Ug3" id="wR8-Gv-tCo">
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7UI-kn-Tye">
+                                                    <rect key="frame" x="290" y="6" width="30" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" title="Del"/>
+                                                </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0wi-L3-kDf">
+                                                    <rect key="frame" x="15" y="11" width="267" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qPb-Ri-dja">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="2bj-3l-J5s">
+                                        <rect key="frame" x="177" y="313" width="20" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="bOF-v5-7xA"/>
+                    </view>
+                    <connections>
+                        <outlet property="coverView" destination="qPb-Ri-dja" id="qkF-6l-n5m"/>
+                        <outlet property="downloadBtn" destination="fq4-0D-AQd" id="5Dy-98-xDf"/>
+                        <outlet property="tableView" destination="jYU-7r-bWS" id="r5E-w2-5eR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2ra-ik-JQm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2905" y="592"/>
         </scene>
     </scenes>
 </document>

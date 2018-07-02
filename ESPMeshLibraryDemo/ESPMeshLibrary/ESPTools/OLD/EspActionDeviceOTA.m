@@ -145,7 +145,7 @@ static NSString * const EspHeaderOTALength = @"Mesh-Ota-Length";
 - (void)otaLocalDevice:(NSArray<EspDevice *> *)devices binPath:(NSString *)binPath {
     EspDevice *deviceFirst = devices[0];
     NSString *host = deviceFirst.host;
-    int port = (int)deviceFirst.port;
+    int port = deviceFirst.port.intValue;
     
     NSMutableString *binVersionReverse = [NSMutableString string];
     for (NSUInteger i = binPath.length - 1 - EspBinSuffix.length; ; i--) {
@@ -267,7 +267,7 @@ static NSString * const EspHeaderOTALength = @"Mesh-Ota-Length";
         Byte *delayBytes = (Byte *)[delayData bytes];
         NSTimeInterval delay = delayBytes[0] | (delayBytes[1] << 8);
         NSLog(@"OTA read delay %lf", delay);
-        [NSThread sleepForTimeInterval:(delay / 1000)];
+        [NSThread sleepForTimeInterval:(delay / 1000.0)];
     }
     
     NSLog(@"OTA try close socket");
@@ -372,7 +372,7 @@ static NSString * const EspHeaderOTALength = @"Mesh-Ota-Length";
 
 - (EspHttpResponse *)requestOTADevices:(NSArray<EspDevice *> *)devices appPort:(uint16_t)appPort appIP:(NSString *)appIP appPkgLen:(int)appPkgLen {
     EspDevice *deviceFirst = devices[0];
-    NSString *urlOtaRequest = [NSString stringWithFormat:@"%@://%@:%d/mesh_ota", deviceFirst.httpType, deviceFirst.host, (int)deviceFirst.port];
+    NSString *urlOtaRequest = [NSString stringWithFormat:@"%@://%@:%@/mesh_ota", deviceFirst.httpType, deviceFirst.host, deviceFirst.port];
     
     NSMutableString *otaAddr = [NSMutableString string];
     [otaAddr appendFormat:@"%02x%02x", (appPort & 0xff), ((appPort >> 8) & 0xff)];
@@ -423,7 +423,7 @@ static NSString * const EspHeaderOTALength = @"Mesh-Ota-Length";
         Byte data45[2] = {i & 0xff, (i >> 8) & 0xff};
         [data appendBytes:data45 length:2];
         
-        NSUInteger exceed = binPosition + binPkgLen - bin.length;
+        long exceed = (long)(binPosition) + (long)binPkgLen - (long)bin.length;
         NSUInteger binRangeLen = exceed > 0 ? (binPkgLen - exceed) : binPkgLen;
         Byte data67[2] = {binRangeLen & 0xff, (binRangeLen >> 8) & 0xff};
         [data appendBytes:data67 length:2];
