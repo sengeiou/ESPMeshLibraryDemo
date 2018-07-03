@@ -10,7 +10,7 @@
 #import "EspActionDeviceOTA.h"
 #import "UIView+Toast.h"
 #import "EspActionDeviceOTA.h"
-
+#import "ESPOTAHelper.h"
 @interface EspOTAViewHolder : NSObject
 
 @property (weak, nonatomic) EspOTAViewController *controller;
@@ -183,14 +183,20 @@
     __block NSString *binPath = [[self getOTADirPath] stringByAppendingPathComponent:bin];
     NSLog(@"Seleted bin %@", binPath);
     self.coverView.hidden = NO;
-    [self.operationQueue addOperationWithBlock:^{
-        EspActionDeviceOTA *action = [[EspActionDeviceOTA alloc] init];
-        [action doActionOTALocalDevices:self.devices binPath:binPath];
-        
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            self.coverView.hidden = YES;
-        }];
+    ESPOTAHelper* otaHelper=[[ESPOTAHelper alloc] init];
+    [otaHelper starOTA:self.devices binPath:binPath timeOut:300 callback:^(NSString *msg) {
+        NSLog(@"%@", msg);
     }];
+
+//    [self.operationQueue addOperationWithBlock:^{
+//        EspActionDeviceOTA *action = [[EspActionDeviceOTA alloc] init];
+//        [action doActionOTALocalDevices:self.devices binPath:binPath];
+//
+//        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+//            self.coverView.hidden = YES;
+//        }];
+//    }];
+    
 }
 
 @end

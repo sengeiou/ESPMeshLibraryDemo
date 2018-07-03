@@ -7,7 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "EspDevice.h"
 
-@interface ESPOTAHelper : NSObject
 
+typedef void(^CallBack)(NSString *msg);
+@interface ESPOTAHelper : NSObject{
+    NSTimer* statusTimer;
+    CallBack callBack;
+    int timeOut;
+    NSString* binPath;
+}
+
+-(void)starOTA:(NSArray<EspDevice *> *)devices binPath:(NSString *)binPath timeOut:(int)timeout callback:(CallBack)callback;
 @end

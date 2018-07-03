@@ -62,20 +62,21 @@ NSString* idString;
             _CallBackBlock(@"retrievePeripheralWithUUIDString failed");
             return;
         }
+        [self disconnectBLE];
         _CallBackBlock(@"retrievePeripheralWithUUIDString success");
         switch (self.currPeripheral.state) {//初始化设备状态
             case CBPeripheralStateConnected:
-                _CallBackBlock(@"CBPeripheralStateConnected");
-                break;
+            _CallBackBlock(@"CBPeripheralStateConnected");
+            break;
             case CBPeripheralStateDisconnected:
-                _CallBackBlock(@"CBPeripheralStateDisconnected");
-                break;
+            _CallBackBlock(@"CBPeripheralStateDisconnected");
+            break;
             default:
-                //_babyBLEStatusBlock(0);
-                break;
+            //_babyBLEStatusBlock(0);
+            break;
         }
         [baby AutoReconnect:self.currPeripheral];
-        baby.having(self.currPeripheral).and.channel(idString).then.connectToPeripherals().discoverServices().discoverCharacteristics().readValueForCharacteristic().discoverDescriptorsForCharacteristic().readValueForDescriptors().begin();
+    baby.having(self.currPeripheral).and.channel(idString).then.connectToPeripherals().discoverServices().discoverCharacteristics().readValueForCharacteristic().discoverDescriptorsForCharacteristic().readValueForDescriptors().begin();
     } else {
         _CallBackBlock(@"CBCentralManagerStatePoweredOff");
     }
